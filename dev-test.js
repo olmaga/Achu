@@ -1,5 +1,7 @@
-const Block = require('./block');
+const Blockchain = require('./blockchain');
 
-const fooBlock = Block.mineBlock(Block.genesis(), 'foo');
+const chain = new Blockchain();
 
-console.log(fooBlock.toString());
+for (let i = 0; i < 10; i++) {
+    console.log(chain.addBlock(`foo ${i}`).toString());
+}
