@@ -59,12 +59,13 @@ describe('Wallet', () => {
         });
 
         describe('and the recipient conducts a transaction', () => {
-            let subtractBalance, recipientBalance;
+            let subtractBalance, recipientBalance, senderBalance;
 
             beforeEach(() => {
                 pool.clear();
                 subtractBalance = 60;
                 recipientBalance = wallet.calculateBalance(blockchain);
+                senderBalance = senderWallet.calculateBalance(blockchain);
                 wallet.createTransaction(senderWallet.publicKey, subtractBalance, blockchain, pool);
                 blockchain.addBlock(pool.transactions);
             });
@@ -76,9 +77,11 @@ describe('Wallet', () => {
                     senderWallet.createTransaction(wallet.publicKey, addBalance, blockchain, pool);
                     blockchain.addBlock(pool.transactions);
                 });
-                
+
                 it('calculates the recipient balance only using transactions sine its most recent one', () => {
+                    console.log(blockchain);
                     expect(wallet.calculateBalance(blockchain)).toEqual(recipientBalance - subtractBalance + addBalance);
+                    expect(senderWallet.calculateBalance(blockchain)).toEqual(senderBalance + subtractBalance - addBalance);
                 });
 
             });

@@ -21,7 +21,7 @@ class Block {
             Last Hash : ${this.lastHash ? this.lastHash.substring(0, 10) + '...' : 'Genesis'}
             Hash      : ${this.hash.substring(0, 10)}...
             Nonce     : ${this.nonce}
-            Data      : ${this.data}
+            Data      : ${JSON.stringify(this.data)}
             Difficulty: ${this.difficulty}`;
     }
 
