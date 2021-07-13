@@ -17,41 +17,52 @@ const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(express.json());
 
-app.get('/blocks', (req, res) => {
+/*
+app.use(express.static(path.join(__dirname, '../frontend/build')))
+
+app.get('',  (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
+*/
+app.get('/api/blocks', (req, res) => {
     res.json(blockchain.chain);
 });
 
-app.post('/mine', (req, res) => {
+app.post('/api/mine', (req, res) => {
     const block = blockchain.addBlock(req.body.data);
     console.log(`New block added: ${block.toString()} - successfully mined.`);
 
     p2pServer.syncChains();
 
-    res.redirect('/blocks');
+    res.redirect('/api/blocks');
 });
 
-app.get('/mine-transactions', (req, res) => {
+app.get('/api/mine-transactions', (req, res) => {
     const block = miner.mine();
     console.log(`New block added: ${block.toString()}`)
-    res.redirect('/blocks');
+    res.redirect('/api/blocks');
 });
 
-app.get('/transactions', (req, res) => {
+app.get('/api/transactions', (req, res) => {
     res.json(pool.transactions);
 });
 
-app.post('/transact', (req, res) => {
+app.post('/api/transact', (req, res) => {
     const { recipient, amount } = req.body;
     const transaction = wallet.createTransaction(recipient, amount, blockchain, pool);
     p2pServer.broadcastTransaction(transaction);
-    res.redirect('transactions');
+    res.redirect('/api/transactions');
 });
 
-app.get('/balance', (req, res) => {
+app.get('/api/balance', (req, res) => {
     res.json({
         publicKey: wallet.publicKey,
         balance: wallet.calculateBalance(blockchain)
     });
+});
+
+app.get('/api/wallets', (req, res) => {
+    res.json(blockchain.listWallets());
 });
 
 app.listen(HTTP_PORT, () => {

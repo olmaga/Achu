@@ -36,9 +36,20 @@ class Blockchain {
             console.log("Received chain is not valid.");
             return;
         }
-        
+
         console.log("Replacing blockchain with the new chain.");
         this.chain = newChain;
+    }
+
+    listWallets() {
+        const wallets = new Set();
+        this.chain.forEach(block => block.data.forEach(transaction => {
+            wallets.add(transaction.input.address);
+            transaction.outputs.forEach(output => {
+                wallets.add(output.address);
+            })
+        }));
+        return [...wallets];
     }
 }
 

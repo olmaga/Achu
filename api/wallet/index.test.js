@@ -79,7 +79,6 @@ describe('Wallet', () => {
                 });
 
                 it('calculates the recipient balance only using transactions sine its most recent one', () => {
-                    console.log(blockchain);
                     expect(wallet.calculateBalance(blockchain)).toEqual(recipientBalance - subtractBalance + addBalance);
                     expect(senderWallet.calculateBalance(blockchain)).toEqual(senderBalance + subtractBalance - addBalance);
                 });
