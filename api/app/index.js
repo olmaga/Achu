@@ -13,7 +13,7 @@ const app = express();
 const blockchain = new Blockchain();
 const wallet = new Wallet();
 const pool = new TransactionPool();
-const p2pServer = new P2pServer(server, blockchain, pool);
+const p2pServer = new P2pServer(app, blockchain, pool);
 const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(express.json());
