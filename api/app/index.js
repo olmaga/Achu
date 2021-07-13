@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const Blockchain = require('../blockchain');
 const Wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
@@ -17,13 +18,13 @@ const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(express.json());
 
-/*
-app.use(express.static(path.join(__dirname, '../frontend/build')))
 
-app.get('',  (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+app.use(express.static(path.join(__dirname, '../../frontend/dist')))
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
-*/
+
 app.get('/api/blocks', (req, res) => {
     res.json(blockchain.chain);
 });
