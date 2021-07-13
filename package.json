@@ -1,5 +1,8 @@
 {
     "scripts": {
         "build": "npm run build --prefix frontend && npm run start --prefix api"
+    },
+    "engines": {
+        "node": "12.18.2"
     }
 }
