@@ -6,14 +6,14 @@ const TransactionPool = require('../wallet/transaction-pool');
 const Miner = require('./miner');
 const P2pServer = require('./p2p-server');
 
-const HTTP_PORT = process.env.HTTP_PORT || 3001;
+const HTTP_PORT = process.env.PORT || 3001;
 // run it like this: `$ HTTP_PORT=3002 npm run dev`
 
 const app = express();
 const blockchain = new Blockchain();
 const wallet = new Wallet();
 const pool = new TransactionPool();
-const p2pServer = new P2pServer(blockchain, pool);
+const p2pServer = new P2pServer(server, blockchain, pool);
 const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(express.json());

@@ -1,6 +1,5 @@
 const Websocket = require('ws');
 
-const P2P_PORT = process.env.P2P_PORT || 5001;
 const MESSAGE_TYPES = {
     chain: "CHAIN",
     transaction: "TRANSACTION",
@@ -9,19 +8,20 @@ const MESSAGE_TYPES = {
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 
 class P2pServer {
-    constructor(blockchain, transactionPool) {
+    constructor(app, blockchain, transactionPool) {
+        this.app = app;
         this.blockchain = blockchain;
         this.transactionPool = transactionPool;
         this.sockets = [];
     }
 
     listen() {
-        const server = new Websocket.Server({ port: P2P_PORT });
+        const server = new Websocket.Server({ server: this.app });
         server.on('connection', socket => this.connectSocket(socket));
 
         this.connectToPeers();
 
-        console.log(`Listening fo p2p connections on: ${P2P_PORT}`);
+        console.log(`Listening fo p2p connections`);
     }
 
     connectToPeers() {
