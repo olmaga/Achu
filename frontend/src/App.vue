@@ -1,13 +1,18 @@
 <template>
   <div>
     <img alt="Vue logo" src="./assets/achu-coin.png" />
-    <Wallets v-bind:wallets="wallets" />
+    <div class="dashboard">
+      <div class="overview">
+        <Wallets v-bind:wallets="wallets" />
+      </div>
+      <div class="actions"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import Wallets from "./components/Wallets.vue";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "App",
@@ -39,11 +44,22 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: "Courier New", Courier, monospace;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #333;
+  margin-top: 30px;
+  margin: auto;
+}
+
+.dashboard {
+  display: flex;
+  width: 90%;
+  margin: auto;
+}
+.overview {
+  flex: 1;
+}
+.actions {
+  flex: 3;
 }
 </style>

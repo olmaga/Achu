@@ -70,6 +70,10 @@ app.get('/api/wallets', (req, res) => {
     res.json(blockchain.listWallets());
 });
 
+app.get('/api/wallet-ids', (req, res) => {
+    res.json(blockchain.listWalletsIds());
+});
+
 server.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`);
 });

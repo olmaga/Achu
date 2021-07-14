@@ -1,3 +1,4 @@
+const Wallet = require('../wallet');
 const Block = require('./block');
 
 class Blockchain {
@@ -41,15 +42,35 @@ class Blockchain {
         this.chain = newChain;
     }
 
-    listWallets() {
+    listWalletsIds() {
         const wallets = new Set();
         this.chain.forEach(block => block.data.forEach(transaction => {
-            wallets.add(transaction.input.address);
-            transaction.outputs.forEach(output => {
-                wallets.add(output.address);
-            })
+            if (transaction.input && transaction.outputs) {
+                wallets.add(transaction.input.address);
+                transaction.outputs.forEach(output => {
+                    wallets.add(output.address);
+                })
+            }
         }));
         return [...wallets];
+    }
+
+    listWallets() {
+        const names = {};
+
+        this.chain.forEach(block => block.data.forEach(transaction => {
+            if (transaction.action === 'name') {
+                names[transaction.publicKey] = transaction.name;
+            }
+        }));
+
+        return this.listWalletsIds().map(id => {
+            return {
+                publicKey: id,
+                name: names[id],
+                balance: Wallet.calculateBalanceOf(id, this)
+            }
+        });
     }
 }
 
