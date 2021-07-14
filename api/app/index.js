@@ -53,7 +53,6 @@ if (!process.env.VUE_APP_VIEWER_NODE) {
 
     app.post('/api/miner/add', (req, res) => {
         const block = blockchain.addBlock(req.body.data);
-        console.log(req.body);
         console.log(`New block added: ${block.toString()} - successfully mined.`);
 
         p2pServer.syncChains();

@@ -6,9 +6,12 @@
         <Wallets v-bind:wallets="wallets" />
       </div>
       <div class="actions">
-        <MyWallet v-bind:wallet="wallet" v-if="!this.viewerNode"/>
-        <div v-if="this.viewerNode">Sorry - this is a viewer peer only. <br/><br/>
-        Go clone your own peer on <a href='https://github.com/olmaga/Achu'>https://github.com/olmaga/Achu</a></div>
+        <MyWallet v-bind:wallet="wallet" v-if="!this.viewerNode" />
+        <div v-if="this.viewerNode">
+          Sorry - this is a viewer peer only. <br /><br />
+          Go clone your own peer on
+          <a href="https://github.com/olmaga/Achu">https://github.com/olmaga/Achu</a>
+        </div>
       </div>
       <div class="stats">
         <Statistics v-bind:statistics="statistics" />
@@ -26,16 +29,16 @@ import axios from "axios";
 export default {
   name: "App",
   components: {
-    Wallets, 
+    Wallets,
     Statistics,
-    MyWallet
+    MyWallet,
   },
   data() {
     return {
       wallets: [],
       wallet: {},
       statistics: {},
-      viewerNode: true
+      viewerNode: true,
     };
   },
   methods: {
@@ -75,7 +78,7 @@ export default {
     this.fetchStatistics();
     this.fetchMyWallet();
 
-    this.viewerNode = !!process.env.VUE_APP_VIEWER_NODE
+    this.viewerNode = !!process.env.VUE_APP_VIEWER_NODE;
   },
 };
 </script>

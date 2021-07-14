@@ -3,7 +3,9 @@ const Websocket = require('ws');
 const MESSAGE_TYPES = {
     chain: "CHAIN",
     transaction: "TRANSACTION",
-    clearTransactions: "CLEAR_TRANSACTIONS"
+    clearTransactions: "CLEAR_TRANSACTIONS",
+    peers: "PEERS",
+    keepAlive: "KEEP_ALIVE"
 };
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 const viewerNode = 'https://achu-coin.herokuapp.com/';
@@ -29,21 +31,31 @@ class P2pServer {
     }
 
     connectToPeers() {
-        peers.forEach(peer => {
-            console.log(peer);
-            const socket = new Websocket(peer);
+        peers.forEach(peer => this.connectPeer(peer));
+    }
 
-            socket.on('open', () => this.connectSocket(socket));
-        });
+    connectPeer(peer) {
+        const socket = new Websocket(peer);
+
+        socket.on('open', () => this.connectSocket(socket));
     }
 
     connectSocket(socket) {
         this.sockets.push(socket);
-        console.log('Socket connected.')
+        console.log(`Socket ${socket._url} connected.`)
 
         this.messageHandler(socket);
 
         this.sendChain(socket);
+
+        this.sendPeers(socket);
+
+        setInterval(() => {
+            socket.send(JSON.stringify({
+                type: MESSAGE_TYPES.keepAlive
+            }));
+            console.log(`Keep-Alive sent to ${socket._url}`);
+        }, 40000);
 
         socket.on('close', () => console.log('Client disconnected'));
     }
@@ -62,6 +74,15 @@ class P2pServer {
                 case MESSAGE_TYPES.clearTransactions:
                     this.transactionPool.clear();
                     break;
+                case MESSAGE_TYPES.peers:
+                    data.peers.forEach(remotePeer => {
+                        if (this.peers.includes(remotePeer)) {
+                            return;
+                        }
+                        this.peers.push(remotePeer);
+                        this.connectPeer(remotePeer);
+                    });
+                    break;
             }
         })
     }
@@ -71,6 +92,15 @@ class P2pServer {
             type: MESSAGE_TYPES.chain,
             chain: this.blockchain.chain
         }));
+    }
+
+    sendPeers(socket) {
+        if (this.peers) {
+            socket.send(JSON.stringify({
+                type: MESSAGE_TYPES.peers,
+                peers: this.peers
+            }));
+        }
     }
 
     sendTransaction(socket, transaction) {
