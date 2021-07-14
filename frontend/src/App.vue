@@ -5,8 +5,10 @@
       <div class="overview">
         <Wallets v-bind:wallets="wallets" />
       </div>
-      <div class="actions" v-if="!process || !process.env.viewerNode">
-        <MyWallet v-bind:wallet="wallet" />
+      <div class="actions">
+        <MyWallet v-bind:wallet="wallet" v-if="!this.viewerNode"/>
+        <div>Sorry - this is a viewer peer only. <br/><br/>
+        Go clone your own peer on <a href='https://github.com/olmaga/Achu'>https://github.com/olmaga/Achu</a></div>
       </div>
       <div class="stats">
         <Statistics v-bind:statistics="statistics" />
@@ -32,7 +34,8 @@ export default {
     return {
       wallets: [],
       wallet: {},
-      statistics: {}
+      statistics: {},
+      viewerNode: true
     };
   },
   methods: {
@@ -71,6 +74,8 @@ export default {
     this.fetchWallets();
     this.fetchStatistics();
     this.fetchMyWallet();
+
+    this.viewerNode = !!process.env.VUE_APP_VIEWER_NODE
   },
 };
 </script>
