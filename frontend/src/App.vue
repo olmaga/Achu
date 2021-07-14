@@ -6,22 +6,27 @@
         <Wallets v-bind:wallets="wallets" />
       </div>
       <div class="actions"></div>
+      <div class="stats">
+        <Statistics v-bind:statistics="statistics" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Wallets from "./components/Wallets.vue";
+import Statistics from "./components/Statistics.vue";
 import axios from "axios";
 
 export default {
   name: "App",
   components: {
-    Wallets,
+    Wallets, Statistics
   },
   data() {
     return {
       wallets: [],
+      statistics: {}
     };
   },
   methods: {
@@ -35,9 +40,20 @@ export default {
           console.error(`Could not load wallets... ${error}`);
         });
     },
+    async fetchStatistics() {
+      await axios
+        .get("/api/stats")
+        .then((response) => {
+          this.statistics = response.data;
+        })
+        .catch((error) => {
+          console.error(`Could not load stats... ${error}`);
+        });
+    },
   },
   mounted() {
     this.fetchWallets();
+    this.fetchStatistics();
   },
 };
 </script>
@@ -57,6 +73,9 @@ export default {
   margin: auto;
 }
 .overview {
+  flex: 1;
+}
+.stats {
   flex: 1;
 }
 .actions {
