@@ -12,15 +12,15 @@ if (!process.env.MOTHER && !peers.includes(mother)) {
 }
 
 class P2pServer {
-    constructor(port, blockchain, transactionPool) {
-        this.port = port;
+    constructor(httpServer, blockchain, transactionPool) {
+        this.httpServer = httpServer;
         this.blockchain = blockchain;
         this.transactionPool = transactionPool;
         this.sockets = [];
     }
 
     listen() {
-        const server = new Websocket.Server({ port: this.port });
+        const server = new Websocket.Server({ server: this.httpServer });
         server.on('connection', socket => this.connectSocket(socket));
 
         this.connectToPeers();

@@ -13,7 +13,6 @@ const app = express();
 const blockchain = new Blockchain();
 const wallet = new Wallet();
 const pool = new TransactionPool();
-const p2pServer = new P2pServer(HTTP_PORT, blockchain, pool);
 const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
 app.use(express.json());
@@ -66,8 +65,10 @@ app.get('/api/wallets', (req, res) => {
     res.json(blockchain.listWallets());
 });
 
-app.listen(HTTP_PORT, () => {
+const httpServer = app.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`);
 })
+
+const p2pServer = new P2pServer(httpServer, blockchain, pool);
 
 p2pServer.listen();
