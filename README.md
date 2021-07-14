@@ -3,7 +3,18 @@ My own beautiful blockchain
 
 The code I created during my online course here: https://www.udemy.com/course/build-blockchain
 
-** Ideas on Extending the Project **
+All you need to do is clone this repository and run this command within the newly created "Achu" folder:
+
+```bash
+chmod +x ./run.sh && ./run.sh
+```
+
+It starts a local server for you with a nice UI on http://localhost:3001 and connects to a default peer on https://achu-coin.herokuapp.com/
+
+
+
+
+** Further ideas on Extending the Project **
 You may still have the itch to extend this blockchain-based cryptocurrency. Here are some ideas for features that you could add:
 
 A GET ‘/balance’ endpoint that allows the user to calculate their balance based on the blockchain, and view it at any time.
