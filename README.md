@@ -14,7 +14,7 @@ It starts a local server for you with a nice UI on http://localhost:3001 and con
 
 
 
-** Further ideas on Extending the Project **
+### Further ideas on extending the project
 You may still have the itch to extend this blockchain-based cryptocurrency. Here are some ideas for features that you could add:
 
 A GET ‘/balance’ endpoint that allows the user to calculate their balance based on the blockchain, and view it at any time.
