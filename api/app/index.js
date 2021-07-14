@@ -47,7 +47,7 @@ app.get('/api/wallets', (req, res) => {
     res.json(blockchain.listWallets());
 });
 
-if (!process.env.viewerNode) {
+if (!process.env.VUE_APP_VIEWER_NODE) {
     const wallet = new Wallet();
     const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
