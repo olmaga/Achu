@@ -7,6 +7,6 @@ npm install --prefix api
 
 npm install --prefix frontend
 
-npm build
+npm run build
 
 npm run dev --prefix api
