@@ -6,9 +6,9 @@ const MESSAGE_TYPES = {
     clearTransactions: "CLEAR_TRANSACTIONS"
 };
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
-const mother = 'https://achu-coin.herokuapp.com/';
-if (!process.env.MOTHER && !peers.includes(mother)) {
-    peers.push(mother);
+const viewerNode = 'https://achu-coin.herokuapp.com/';
+if (!process.env.viewerNode && !peers.includes(viewerNode)) {
+    peers.push(viewerNode);
 }
 
 class P2pServer {
