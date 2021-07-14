@@ -7,7 +7,7 @@
       </div>
       <div class="actions">
         <MyWallet v-bind:wallet="wallet" v-if="!this.viewerNode"/>
-        <div>Sorry - this is a viewer peer only. <br/><br/>
+        <div v-if="this.viewerNode">Sorry - this is a viewer peer only. <br/><br/>
         Go clone your own peer on <a href='https://github.com/olmaga/Achu'>https://github.com/olmaga/Achu</a></div>
       </div>
       <div class="stats">
