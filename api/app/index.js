@@ -5,18 +5,23 @@ const Wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
 const Miner = require('./miner');
 const P2pServer = require('./p2p-server');
+const http = require('http');
 
 const HTTP_PORT = process.env.PORT || 3001;
 // run it like this: `$ HTTP_PORT=3002 npm run dev`
 
 const app = express();
+
+const server = http.createServer(app)
 const blockchain = new Blockchain();
 const wallet = new Wallet();
 const pool = new TransactionPool();
+const p2pServer = new P2pServer(server, blockchain, pool);
 const miner = new Miner(blockchain, pool, wallet, p2pServer);
 
-app.use(express.json());
+p2pServer.listen();
 
+app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../../frontend/dist')))
 
@@ -65,10 +70,6 @@ app.get('/api/wallets', (req, res) => {
     res.json(blockchain.listWallets());
 });
 
-const httpServer = app.listen(HTTP_PORT, () => {
+server.listen(HTTP_PORT, () => {
     console.log(`Listening on port ${HTTP_PORT}`);
-})
-
-const p2pServer = new P2pServer(httpServer, blockchain, pool);
-
-p2pServer.listen();
+});
