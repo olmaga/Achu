@@ -12,15 +12,15 @@ if (!process.env.MOTHER && !peers.includes(mother)) {
 }
 
 class P2pServer {
-    constructor(app, blockchain, transactionPool) {
-        this.app = app;
+    constructor(port, blockchain, transactionPool) {
+        this.port = port;
         this.blockchain = blockchain;
         this.transactionPool = transactionPool;
         this.sockets = [];
     }
 
     listen() {
-        const server = new Websocket.Server({ server: this.app });
+        const server = new Websocket.Server({ port: this.port });
         server.on('connection', socket => this.connectSocket(socket));
 
         this.connectToPeers();
@@ -43,6 +43,8 @@ class P2pServer {
         this.messageHandler(socket);
 
         this.sendChain(socket);
+
+        socket.on('close', () => console.log('Client disconnected'));
     }
 
     messageHandler(socket) {
