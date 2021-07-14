@@ -7,7 +7,7 @@ const MESSAGE_TYPES = {
 };
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 const viewerNode = 'https://achu-coin.herokuapp.com/';
-if (!process.env.viewerNode && !peers.includes(viewerNode)) {
+if (!process.env.viewerNode && !process.env.standalone && !peers.includes(viewerNode)) {
     peers.push(viewerNode);
 }
 

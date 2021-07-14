@@ -5,7 +5,9 @@
       <div class="overview">
         <Wallets v-bind:wallets="wallets" />
       </div>
-      <div class="actions"></div>
+      <div class="actions" v-if="!process || !process.env.viewerNode">
+        <MyWallet v-bind:wallet="wallet" />
+      </div>
       <div class="stats">
         <Statistics v-bind:statistics="statistics" />
       </div>
@@ -16,16 +18,20 @@
 <script>
 import Wallets from "./components/Wallets.vue";
 import Statistics from "./components/Statistics.vue";
+import MyWallet from "./components/MyWallet.vue";
 import axios from "axios";
 
 export default {
   name: "App",
   components: {
-    Wallets, Statistics
+    Wallets, 
+    Statistics,
+    MyWallet
   },
   data() {
     return {
       wallets: [],
+      wallet: {},
       statistics: {}
     };
   },
@@ -50,10 +56,21 @@ export default {
           console.error(`Could not load stats... ${error}`);
         });
     },
+    async fetchMyWallet() {
+      await axios
+        .get("/api/wallets/my/balance")
+        .then((response) => {
+          this.wallet = response.data;
+        })
+        .catch((error) => {
+          console.error(`Could not load my wallet... ${error}`);
+        });
+    },
   },
   mounted() {
     this.fetchWallets();
     this.fetchStatistics();
+    this.fetchMyWallet();
   },
 };
 </script>
@@ -79,6 +96,6 @@ export default {
   flex: 1;
 }
 .actions {
-  flex: 3;
+  flex: 2;
 }
 </style>

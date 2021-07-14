@@ -53,6 +53,7 @@ if (!process.env.viewerNode) {
 
     app.post('/api/miner/add', (req, res) => {
         const block = blockchain.addBlock(req.body.data);
+        console.log(req.body);
         console.log(`New block added: ${block.toString()} - successfully mined.`);
 
         p2pServer.syncChains();
@@ -63,7 +64,7 @@ if (!process.env.viewerNode) {
     app.post('/api/miner/transactions', (req, res) => {
         const block = miner.mine();
         console.log(`New block added: ${block.toString()}`)
-        res.redirect('/api/blocks');
+        res.json(block);
     });
 
     app.get('/api/wallets/my/balance', (req, res) => {

@@ -25,12 +25,15 @@ export default {
   flex-flow: row wrap;
   text-align: left;
   width: 100%;
+  margin-bottom: 15px;
 }
 .wallet-name {
   flex: 0 0 100%;
+  margin-bottom: 3px;
 }
 .wallet-public-key {
   flex: 2;
+  flex-shrink: 50%;
 }
 .wallet-balance {
   flex: 1;
