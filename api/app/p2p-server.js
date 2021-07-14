@@ -6,6 +6,10 @@ const MESSAGE_TYPES = {
     clearTransactions: "CLEAR_TRANSACTIONS"
 };
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
+const mother = 'https://achu-coin.herokuapp.com/';
+if (!process.env.MOTHER && !peers.includes(mother)) {
+    peers.push(mother);
+}
 
 class P2pServer {
     constructor(app, blockchain, transactionPool) {
